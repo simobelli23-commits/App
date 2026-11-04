@@ -1,0 +1,16 @@
+# Server Valhalla di SVILUPPO (opzione A: solo rete locale).
+# Immagine: ghcr.io/valhalla/valhalla-scripted (MIT). Versione da fissare dopo verifica.
+# Mettere l'estratto Modena in ./data/modena.osm.pbf prima dell'avvio.
+services:
+  valhalla:
+    image: ghcr.io/valhalla/valhalla-scripted:latest
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data:/custom_files
+    environment:
+      - use_tiles_ignore_pbf=False
+      - build_admins=True
+      - build_time_zones=True
+      - serve_tiles=True
+      - force_rebuild=False

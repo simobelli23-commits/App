@@ -1,0 +1,23 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+pubspec.lock
+!app/pubspec.lock
+*.iml
+.idea/
+# Android
+*.jks
+*.keystore
+local.properties
+key.properties
+# Dati e tile (non versionati)
+*.osm.pbf
+routing/valhalla/data/
+routing/valhalla/fixtures/results.json
+routing/valhalla/fixtures/*.manifest.json
+# Python
+__pycache__/
+.venv/
+# Segreti
+.env

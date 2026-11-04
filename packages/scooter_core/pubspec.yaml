@@ -1,0 +1,11 @@
+name: scooter_core
+description: Logica di dominio del Navigatore Scooter Italia (regole, routing, ETA, navigazione). Pure Dart, senza dipendenze Flutter.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0
