@@ -118,6 +118,16 @@ voce disattivata.
 
 **Non verificato**: voce italiana reale del TTS Android, GPS reale, guida su strada.
 
+## 2026-11-04 — Build APK su GitHub Actions
+
+| Run | Commit | Esito | Note |
+|---|---|---|---|
+| #1 | c6a5686 | **fallita** | `maplibre_gl`: "invalid source release: 21" con JDK 17 → workflow portato a Java 21 |
+| #2 | d737f79 | **riuscita** | test core + app verdi su CI; APK ~35 MB |
+| #3 | d6669f7 | **riuscita** | include schermo acceso e opzione HTTP; APK senza `ROUTING_URL` |
+
+L'APK è compilato ma **non ancora installato né provato su un telefono**.
+
 ### Non eseguiti
 | Suite | Motivo |
 |---|---|

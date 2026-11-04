@@ -35,6 +35,6 @@
 10d. APK release firmato con chiave di debug (solo test, non pubblicabile).
 10e. Raggio di accuratezza GPS disegnato in pixel con approssimazione fissa (non in metri reali).
 11. Navigazione fuori casa impossibile finché il server di routing gira solo sul PC (opzione A).
-12. Ambiente cloud: niente Android SDK (dl.google.com bloccato) → APK non generabile qui.
+12. Ambiente cloud: niente Android SDK (dl.google.com bloccato) → APK generato su GitHub Actions.
 13. `IoHttpTransport` distingue "nessuna rete" da "server irraggiungibile" con euristiche
     sull'errore socket; su Android va verificato anche con la connettività di sistema.

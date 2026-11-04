@@ -8,7 +8,7 @@
 | M3 GPS + turn-by-turn | **completata in parte**: motore, voce, ricalcolo e schermata testati (core 68, e2e 6, app 21); manca prova su dispositivo con TTS e GPS reali | NavigationSession integrata, TTS it-IT, ricalcolo, gestione perdita GPS/rete |
 | M4 Ricerca, preferiti, impostazioni | da iniziare | Nominatim su invio + throttle, SQLite, impostazioni complete |
 | M5 Test e correzioni | da iniziare | tutte le suite verdi, KNOWN_ISSUES aggiornato |
-| M6 APK + dispositivo reale | da iniziare | APK release installato su telefono, checklist dispositivo |
+| M6 APK + dispositivo reale | **APK generato** (GitHub Actions run #3); prova su telefono da fare | APK release installato su telefono, checklist dispositivo |
 | M7 Beta privata | da iniziare | server raggiungibile in mobilità via HTTPS, test di guida reali |
 
 ## Riserve M0
