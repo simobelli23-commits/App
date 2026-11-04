@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'adapters/routing_factory.dart';
+import 'adapters/tts_voice.dart';
 import 'app/app.dart';
 import 'features/location/geolocator_location_provider.dart';
 import 'features/location/location_controller.dart';
@@ -16,5 +18,7 @@ Future<void> main() async {
     settings: settings,
     location: location,
     mapFactory: const MapLibreMapViewFactory(),
+    routing: createRoutingProvider(),
+    voice: TtsVoice(),
   ));
 }

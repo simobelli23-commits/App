@@ -25,7 +25,7 @@ void main() {
     final provider = ControlledLocationProvider(ready);
     final loc = LocationController(provider, clock: () => now);
     await tester.pumpWidget(ScooterApp(
-        settings: SettingsController(prefs), location: loc, mapFactory: maps));
+        settings: SettingsController(prefs), location: loc, mapFactory: maps, routing: ScriptedRouting([Ok([lRoute()])])));
     await tester.pump();
     addTearDown(loc.dispose);
     return (maps, provider, loc);

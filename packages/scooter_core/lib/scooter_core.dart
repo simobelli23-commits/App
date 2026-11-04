@@ -3,7 +3,10 @@ library;
 
 export 'src/eta/eta_model.dart';
 export 'src/geo/geo.dart';
+export 'src/navigation/format_it.dart';
+export 'src/navigation/navigation_engine.dart';
 export 'src/navigation/navigation_session.dart';
+export 'src/navigation/voice_planner.dart';
 export 'src/providers/providers.dart';
 export 'src/rules/legal_refs.dart';
 export 'src/rules/osm_access_rules.dart';

@@ -104,6 +104,7 @@ class ValhallaParser {
           instruction: mm['instruction'] as String? ?? '',
           verbalPre: mm['verbal_pre_transition_instruction'] as String?,
           verbalPost: mm['verbal_post_transition_instruction'] as String?,
+          verbalAlert: mm['verbal_transition_alert_instruction'] as String?,
           lengthM: ((mm['length'] as num?) ?? 0) * 1000.0,
           timeS: ((mm['time'] as num?) ?? 0).toDouble(),
           beginShapeIndex: offset + ((mm['begin_shape_index'] as num?) ?? 0).toInt(),

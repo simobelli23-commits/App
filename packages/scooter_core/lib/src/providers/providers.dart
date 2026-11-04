@@ -43,6 +43,9 @@ class Maneuver {
   final String instruction;
   final String? verbalPre;
   final String? verbalPost;
+
+  /// Avviso anticipato ("Svolta a destra su Via Emilia"), senza distanza.
+  final String? verbalAlert;
   final double lengthM;
   final double timeS;
   final int beginShapeIndex;
@@ -54,6 +57,7 @@ class Maneuver {
     required this.instruction,
     this.verbalPre,
     this.verbalPost,
+    this.verbalAlert,
     required this.lengthM,
     required this.timeS,
     required this.beginShapeIndex,

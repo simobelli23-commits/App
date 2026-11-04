@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:scooter_core/scooter_core.dart' as core;
 
 import '../features/location/location_controller.dart';
 import '../features/map/home_screen.dart';
@@ -11,12 +12,16 @@ class ScooterApp extends StatelessWidget {
   final SettingsController settings;
   final LocationController location;
   final MapViewFactory mapFactory;
+  final core.RoutingProvider routing;
+  final core.VoiceOutput? voice;
 
   const ScooterApp({
     super.key,
     required this.settings,
     required this.location,
     required this.mapFactory,
+    required this.routing,
+    this.voice,
   });
 
   @override
@@ -32,7 +37,13 @@ class ScooterApp extends StatelessWidget {
         locale: const Locale('it', 'IT'),
         supportedLocales: const [Locale('it', 'IT')],
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        home: HomeScreen(settings: settings, location: location, mapFactory: mapFactory),
+        home: HomeScreen(
+          settings: settings,
+          location: location,
+          mapFactory: mapFactory,
+          routing: routing,
+          voice: voice,
+        ),
       ),
     );
   }

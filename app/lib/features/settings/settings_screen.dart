@@ -20,8 +20,8 @@ class SettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.moped),
             title: const Text('Profilo veicolo'),
             subtitle: Text(settings.vehicleProfile.label),
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => VehicleScreen(settings: settings))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => VehicleScreen(settings: settings))),
           ),
           SwitchListTile(
             key: const Key('settings-voice'),
@@ -61,8 +61,8 @@ class SettingsScreen extends StatelessWidget {
             key: const Key('settings-attributions'),
             leading: const Icon(Icons.info_outline),
             title: const Text('Attribuzioni cartografiche'),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const AttributionsScreen())),
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const AttributionsScreen())),
           ),
         ]),
       ),
@@ -100,12 +100,15 @@ class AttributionsScreen extends StatelessWidget {
         body: ListView(padding: const EdgeInsets.all(16), children: const [
           Text(AppConfig.mapAttribution),
           SizedBox(height: 12),
-          Text('Dati cartografici © OpenStreetMap contributors, disponibili con '
+          Text(
+              'Dati cartografici © OpenStreetMap contributors, disponibili con '
               'licenza Open Database License (ODbL) 1.0 — openstreetmap.org/copyright.'),
           SizedBox(height: 12),
-          Text('Tile vettoriali: OpenFreeMap (openfreemap.org), schema OpenMapTiles.'),
+          Text(
+              'Tile vettoriali: OpenFreeMap (openfreemap.org), schema OpenMapTiles.'),
           SizedBox(height: 12),
-          Text('Mappa: MapLibre (licenza BSD). Routing: Valhalla (licenza MIT).'),
+          Text(
+              'Mappa: MapLibre (licenza BSD). Routing: Valhalla (licenza MIT).'),
         ]),
       );
 }

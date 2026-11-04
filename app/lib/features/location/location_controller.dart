@@ -52,7 +52,8 @@ class LocationController extends ChangeNotifier {
       _set(switch (ready.error.kind) {
         LocationErrorKind.serviceDisabled => LocationStatus.serviceDisabled,
         LocationErrorKind.permissionDenied => LocationStatus.permissionDenied,
-        LocationErrorKind.permissionDeniedForever => LocationStatus.permissionDeniedForever,
+        LocationErrorKind.permissionDeniedForever =>
+          LocationStatus.permissionDeniedForever,
         LocationErrorKind.unavailable => LocationStatus.unavailable,
       });
       return;
@@ -67,7 +68,8 @@ class LocationController extends ChangeNotifier {
       _set(LocationStatus.unavailable);
     });
     _watchdog?.cancel();
-    _watchdog = Timer.periodic(const Duration(seconds: 1), (_) => checkSignal());
+    _watchdog =
+        Timer.periodic(const Duration(seconds: 1), (_) => checkSignal());
   }
 
   void _onFix(LocationFix fix) {

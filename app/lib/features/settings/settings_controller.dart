@@ -32,7 +32,8 @@ class SettingsController extends ChangeNotifier {
 
   /// Profili selezionabili in questa versione: solo quelli supportati dal
   /// routing (oggi il ciclomotore). Gli altri sono visibili ma disabilitati.
-  static bool isSelectable(VehicleProfile p) => ValhallaRequestBuilder.supports(p);
+  static bool isSelectable(VehicleProfile p) =>
+      ValhallaRequestBuilder.supports(p);
 
   VehicleProfile get vehicleProfile {
     final p = VehicleProfiles.byId(_prefs.getString(_kProfile) ?? '');

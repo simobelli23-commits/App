@@ -11,7 +11,8 @@ class AppConfig {
   /// URL del server Valhalla (es. http://192.168.1.10:8002/). Vuoto = non configurato.
   static const routingUrl = String.fromEnvironment('ROUTING_URL');
 
-  static const mapAttribution = '© OpenStreetMap contributors · OpenFreeMap · OpenMapTiles';
+  static const mapAttribution =
+      '© OpenStreetMap contributors · OpenFreeMap · OpenMapTiles';
 
   /// Centro iniziale: Modena (area della prima sperimentazione).
   static const initialCenter = core.LatLng(44.6471, 10.9252);

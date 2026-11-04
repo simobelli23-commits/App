@@ -19,14 +19,15 @@ class GeolocatorLocationProvider implements AppLocationProvider {
       }
       switch (perm) {
         case LocationPermission.denied:
-          return const Err(LocationError(
-              LocationErrorKind.permissionDenied, 'Permesso di posizione negato'));
+          return const Err(LocationError(LocationErrorKind.permissionDenied,
+              'Permesso di posizione negato'));
         case LocationPermission.deniedForever:
-          return const Err(LocationError(LocationErrorKind.permissionDeniedForever,
+          return const Err(LocationError(
+              LocationErrorKind.permissionDeniedForever,
               'Permesso di posizione negato in modo permanente'));
         case LocationPermission.unableToDetermine:
-          return const Err(LocationError(
-              LocationErrorKind.unavailable, 'Stato del permesso non determinabile'));
+          return const Err(LocationError(LocationErrorKind.unavailable,
+              'Stato del permesso non determinabile'));
         case LocationPermission.whileInUse:
         case LocationPermission.always:
           return const Ok(null);

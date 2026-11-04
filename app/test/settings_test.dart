@@ -20,7 +20,11 @@ void main() {
     final loc = LocationController(ControlledLocationProvider([ok]));
     addTearDown(loc.dispose);
     await tester.pumpWidget(
-        ScooterApp(settings: settings, location: loc, mapFactory: RecordingMapFactory()));
+        ScooterApp(
+        settings: settings,
+        location: loc,
+        mapFactory: RecordingMapFactory(),
+        routing: ScriptedRouting([Ok([lRoute()])])));
     await tester.pump();
     await tester.tap(find.byKey(const Key('open-settings')));
     await tester.pumpAndSettle();
