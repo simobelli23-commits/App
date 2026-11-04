@@ -27,7 +27,8 @@ ciclomotori/scooter con routing conforme al Codice della Strada.
 
 ## Comandi
 ```bash
-cd packages/scooter_core && dart pub get && dart test     # test unitari core
+cd packages/scooter_core && dart pub get && dart test -x integration   # unit test core
+VALHALLA_URL=http://127.0.0.1:8002/ dart test -t integration            # e2e con server reale
 python -I scripts/build_fixture_network.py routing/valhalla/fixtures/scenarios.osm.pbf
 python -I scripts/valhalla_integration_test.py routing/valhalla/fixtures/scenarios.osm.pbf
 ```

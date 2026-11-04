@@ -3,10 +3,10 @@
 ## Dipendenze attuali
 | Componente | Dove | Licenza | Stato |
 |---|---|---|---|
-| Dart SDK | build | BSD-3 | non installato nell'ambiente |
+| Flutter 3.47.9 / Dart 3.13.7 | build | BSD-3 | installato in /opt/tools (container) |
 | package:test, package:lints | dev core | BSD-3 | dichiarate in pubspec |
-| Valhalla / pyvalhalla 3.9.1 | routing, test | MIT | non installato (in attesa di approvazione) |
-| pyosmium | fixture | BSD-2 | non installato |
+| Valhalla / pyvalhalla 3.9.1 | routing, test | MIT | installato in venv /opt/tools/venv |
+| pyosmium | fixture | BSD-2 | installato in venv |
 | Docker image `ghcr.io/valhalla/valhalla-scripted` | server sviluppo | MIT | non scaricata |
 
 ## Dipendenze previste per l'app (M1)

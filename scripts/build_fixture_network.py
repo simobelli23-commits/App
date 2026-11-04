@@ -11,6 +11,7 @@ Uso:  python -I scripts/build_fixture_network.py routing/valhalla/fixtures/scena
 Richiede: pyosmium (pip install osmium) - licenza BSD-2.
 """
 import json
+import os
 import sys
 
 import osmium
@@ -23,10 +24,13 @@ SCENARIOS = [
     ("motorroad", "Extraurbana principale (trunk + motorroad=yes)",
      {"highway": "trunk", "motorroad": "yes", "oneway": "yes"}, True, {}),
     ("trunk_plain", "Trunk senza motorroad (dato ambiguo)", {"highway": "trunk"}, True, {}),
+    ("trunk_moped_yes", "Trunk con moped=yes esplicito", {"highway": "trunk", "moped": "yes"}, True, {}),
     ("oneway_against", "Senso unico contrario alla marcia",
      {"highway": "residential", "oneway": "-1"}, True, {}),
     ("oneway_except_bike", "Senso unico con eccezione solo bici",
-     {"highway": "residential", "oneway": "-1", "oneway:bicycle": "no"}, True, {}),
+     {"highway": "residential", "oneway": "yes", "oneway:bicycle": "no"}, True, {"reverse": True}),
+    ("oneway_yes_reversed", "Senso unico (oneway=yes) digitalizzato contro la marcia",
+     {"highway": "residential", "oneway": "yes"}, True, {"reverse": True}),
     ("cycleway", "Pista ciclabile come scorciatoia", {"highway": "cycleway"}, True, {}),
     ("footway", "Percorso pedonale come scorciatoia", {"highway": "footway"}, True, {}),
     ("private", "Strada privata come scorciatoia", {"highway": "service", "access": "private"}, True, {}),
@@ -76,8 +80,12 @@ def build(path: str) -> dict:
             res = {"highway": "residential", "name": f"Via {sid} accesso"}
             way(["S0", "S"], res)
             way(["E", "E0"], res)
-            sc1 = way(["S", "M"], {**tags, "name": f"{sid} scorciatoia 1"})
-            sc2 = way(["M", "E"], {**tags, "name": f"{sid} scorciatoia 2"})
+            if extra.get("reverse"):  # way digitalizzate E->M->S
+                sc2 = way(["E", "M"], {**tags, "name": f"{sid} scorciatoia 2"})
+                sc1 = way(["M", "S"], {**tags, "name": f"{sid} scorciatoia 1"})
+            else:
+                sc1 = way(["S", "M"], {**tags, "name": f"{sid} scorciatoia 1"})
+                sc2 = way(["M", "E"], {**tags, "name": f"{sid} scorciatoia 2"})
             if detour:
                 way(["S", "N1", "N2", "E"], {"highway": "residential", "name": f"Via {sid} deviazione"})
             if "restriction" in extra:
@@ -95,6 +103,8 @@ def build(path: str) -> dict:
                 "shortcut_names": [f"{sid} scorciatoia 1", f"{sid} scorciatoia 2"],
             }
     # Ordine canonico OSM: nodi, poi way, poi relazioni.
+    if os.path.exists(path):
+        os.remove(path)
     with osmium.SimpleWriter(path) as w:
         for n in nodes:
             w.add_node(n)

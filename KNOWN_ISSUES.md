@@ -1,9 +1,11 @@
 # Problemi noti e limitazioni
 
-1. **Codice core non compilato né testato** (manca Dart SDK). Possibili errori di
-   compilazione da correggere alla prima esecuzione.
-2. **Comportamento reale di Valhalla `motor_scooter` non verificato** su motorway,
-   motorroad, private, oneway:bicycle, restrizioni di svolta.
+1. Core testato solo con unit test e rete **sintetica**: nessuna verifica su dati reali di Modena.
+2. Valhalla `motor_scooter` verificato su rete sintetica **senza database amministrativo**
+   (`build_admins` non eseguito): con admin per Italia le regole di accesso per paese
+   potrebbero cambiare → ripetere i test di integrazione con admin.
+2b. Valhalla evita `highway=trunk` anche con `moped=yes` esplicito (scenario `trunk_moped_yes`):
+   causa (accesso negato vs costo) non indagata; coerente con la politica prudente ma da capire.
 3. **Regole normative non verificate sul testo ufficiale** (Normattiva bloccato).
 4. **`highway=trunk` escluso per prudenza**: può allungare percorsi dove una trunk è
    in realtà consentita ai ciclomotori.
@@ -13,7 +15,11 @@
    ricevere una classe inferiore: la config del progetto lo imposta a `false` — da verificare.
 7. ZTL e restrizioni orarie (`*:conditional`) non interpretate: tratti marcati incerti.
 8. ETA: tutti gli archi considerati urbani (manca il dato per arco); stima prudente.
+   Su 3,6 km residenziali sintetici: modello app 602 s vs motore 370 s. Da calibrare sui
+   dati reali (le velocità tipiche sono ipotesi, non misure).
 9. ETA residuo proporzionale alla distanza: impreciso su percorsi misti urbano/extraurbano.
 10. Nessuna app Flutter ancora: mappa, GPS, TTS, ricerca, SQLite da implementare (M1–M4).
 11. Navigazione fuori casa impossibile finché il server di routing gira solo sul PC (opzione A).
 12. Ambiente cloud: niente Android SDK (dl.google.com bloccato) → APK non generabile qui.
+13. `IoHttpTransport` distingue "nessuna rete" da "server irraggiungibile" con euristiche
+    sull'errore socket; su Android va verificato anche con la connettività di sistema.

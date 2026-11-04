@@ -31,6 +31,8 @@ EXPECT = {
     "trunk_plain": ("info", "auto"),  # ambiguo: il validatore app lo esclude
     "oneway_against": ("avoid", "pedestrian"),
     "oneway_except_bike": ("avoid", "bicycle"),
+    "oneway_yes_reversed": ("avoid", "pedestrian"),
+    "trunk_moped_yes": ("info", "auto"),
     "cycleway": ("avoid", "bicycle"),
     "footway": ("avoid", "pedestrian"),
     "private": ("avoid", "pedestrian"),
@@ -43,17 +45,15 @@ EXPECT = {
 
 def build_tiles(pbf: str, workdir: str) -> str:
     tile_dir = os.path.join(workdir, "tiles")
-    cfg = get_config(tile_extract=os.path.join(workdir, "tiles.tar"), tile_dir=tile_dir)
+    os.makedirs(tile_dir, exist_ok=True)
+    cfg = get_config(tile_extract="", tile_dir=tile_dir)
     cfg["mjolnir"]["reclassify_links"] = False  # vedi ROUTING_RULES.md
     cfg_path = os.path.join(workdir, "valhalla.json")
     with open(cfg_path, "w") as f:
         json.dump(cfg, f)
-    subprocess.run([sys.executable, "-m", "valhalla", "valhalla_build_tiles", "-c", cfg_path, pbf],
-                   check=True)
-    # senza tar si usa direttamente tile_dir
-    cfg["mjolnir"]["tile_extract"] = ""
-    with open(cfg_path, "w") as f:
-        json.dump(cfg, f)
+    import valhalla
+    exe = os.path.join(os.path.dirname(valhalla.__file__), "bin", "valhalla_build_tiles")
+    subprocess.run([exe, "-c", cfg_path, pbf], check=True, stdout=subprocess.DEVNULL)
     return cfg_path
 
 

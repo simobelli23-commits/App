@@ -18,6 +18,15 @@ Configurazione obbligatoria per il progetto: `mjolnir.reclassify_links = false`.
 **Da verificare**: che l'immagine Docker consenta di impostarla (altrimenti generare
 `valhalla.json` personalizzato in `data/`).
 
+## Server locale sulla rete sintetica (per i test e2e Dart)
+```bash
+B=$(python -c "import valhalla,os;print(os.path.dirname(valhalla.__file__))")/bin
+python -c "import json;from valhalla import get_config as g;c=g(tile_extract='',tile_dir='vh/tiles');c['mjolnir']['reclassify_links']=False;json.dump(c,open('vh/valhalla.json','w'))"
+$B/valhalla_build_tiles -c vh/valhalla.json fixtures/scenarios.osm.pbf
+$B/valhalla_service vh/valhalla.json 1     # porta 8002
+```
+(`vh/tiles` deve esistere prima di `get_config`.)
+
 ## Test di integrazione (rete sintetica)
 Vedi `scripts/valhalla_integration_test.py`. I risultati vanno in `fixtures/results.json`
 e riassunti in `TEST_RESULTS.md`.

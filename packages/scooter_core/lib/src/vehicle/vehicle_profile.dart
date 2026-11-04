@@ -107,7 +107,7 @@ class VehicleProfiles {
   }) =>
       VehicleProfile(
         id: 'E_elettrico_${category.name}_${powerKw}kW',
-        label: 'Elettrico ${category.name} ${powerKw} kW',
+        label: 'Elettrico ${category.name} $powerKw kW',
         category: category,
         propulsion: Propulsion.elettrico,
         powerKw: powerKw,
