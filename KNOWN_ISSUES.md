@@ -18,7 +18,12 @@
    Su 3,6 km residenziali sintetici: modello app 602 s vs motore 370 s. Da calibrare sui
    dati reali (le velocità tipiche sono ipotesi, non misure).
 9. ETA residuo proporzionale alla distanza: impreciso su percorsi misti urbano/extraurbano.
-10. Nessuna app Flutter ancora: mappa, GPS, TTS, ricerca, SQLite da implementare (M1–M4).
+10. App M1: ricerca destinazione, routing, navigazione, TTS e SQLite non ancora collegati
+    (il campo di ricerca è visibilmente disabilitato con "Disponibile nella prossima versione").
+10b. Rendering mappa e GPS mai provati su dispositivo; tile OpenFreeMap non verificate.
+10c. Tema scuro: la mappa usa lo stesso stile chiaro "liberty" (nessuno stile scuro configurato).
+10d. APK release firmato con chiave di debug (solo test, non pubblicabile).
+10e. Raggio di accuratezza GPS disegnato in pixel con approssimazione fissa (non in metri reali).
 11. Navigazione fuori casa impossibile finché il server di routing gira solo sul PC (opzione A).
 12. Ambiente cloud: niente Android SDK (dl.google.com bloccato) → APK non generabile qui.
 13. `IoHttpTransport` distingue "nessuna rete" da "server irraggiungibile" con euristiche

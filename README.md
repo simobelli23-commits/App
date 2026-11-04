@@ -4,9 +4,9 @@ Navigatore Android (Flutter) per ciclomotori e scooter, con percorsi compatibili
 categoria del veicolo e le restrizioni del Codice della Strada italiano.
 Prima versione: **ciclomotore 50 cc (45 km/h)**, area di test **provincia di Modena**.
 
-> Stato: **Milestone 0**. Esiste il nucleo logico (`packages/scooter_core`), ma **non è
-> ancora stato compilato né testato**. Non esiste ancora un'app installabile.
-> Vedi `ROADMAP.md` e `TEST_RESULTS.md`.
+> Stato: **Milestone 1**. Nucleo logico testato (unit + motore Valhalla su rete sintetica);
+> app Flutter con mappa, GPS e impostazioni compilata e testata con test widget.
+> **Nessun APK ancora generato** e nessuna prova su dispositivo. Vedi `ROADMAP.md`, `TEST_RESULTS.md`.
 
 ## Contenuto
 - `packages/scooter_core/`: regole di percorribilità (tag OSM → vietato/consentito/incerto),

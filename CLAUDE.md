@@ -20,7 +20,8 @@ ciclomotori/scooter con routing conforme al Codice della Strada.
 
 ## Struttura
 - `packages/scooter_core/` — logica pura Dart (regole, ETA, navigazione, provider). Nessuna dipendenza Flutter.
-- `app/` — app Flutter (UI, adattatori concreti: MapLibre, GPS, TTS, SQLite). *Da creare in M1.*
+- `app/` — app Flutter: `lib/app` (bootstrap, tema, config), `lib/features/{map,location,settings,vehicle}`.
+  La mappa è dietro `MapViewFactory` (MapLibre nell'app, doppio di test nei test widget).
 - `routing/valhalla/` — configurazione server Valhalla, fixture di test.
 - `scripts/` — strumenti (fixture sintetiche, test di integrazione del motore).
 - `docs/` — report di milestone.
@@ -29,6 +30,7 @@ ciclomotori/scooter con routing conforme al Codice della Strada.
 ```bash
 cd packages/scooter_core && dart pub get && dart test -x integration   # unit test core
 VALHALLA_URL=http://127.0.0.1:8002/ dart test -t integration            # e2e con server reale
+cd app && flutter analyze && flutter test && flutter build web   # app (web = verifica compilazione)
 python -I scripts/build_fixture_network.py routing/valhalla/fixtures/scenarios.osm.pbf
 python -I scripts/valhalla_integration_test.py routing/valhalla/fixtures/scenarios.osm.pbf
 ```

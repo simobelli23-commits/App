@@ -21,7 +21,7 @@ packages/scooter_core/lib/src/
                 MapProvider + tipi Result/errori
   valhalla/     ValhallaRoutingProvider, request builder, parser, HttpTransport
 
-app/ (Flutter, M1)                      — da creare
+app/ (Flutter) — stato M1: map, location, settings, vehicle implementati
   lib/app/          bootstrap, tema M3 chiaro/scuro, routing schermate
   lib/features/map/          MapLibre (maplibre_gl), posizione, ricentraggio
   lib/features/search/       ricerca su invio (Nominatim), cronologia, selezione su mappa

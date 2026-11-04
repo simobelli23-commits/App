@@ -9,9 +9,14 @@
 | pyosmium | fixture | BSD-2 | installato in venv |
 | Docker image `ghcr.io/valhalla/valhalla-scripted` | server sviluppo | MIT | non scaricata |
 
-## Dipendenze previste per l'app (M1)
-maplibre_gl (BSD-3), geolocator (MIT), flutter_tts (MIT), sqflite (BSD-2), http (BSD-3).
-Versioni e licenze da riverificare su pub.dev al momento dell'aggiunta.
+## Dipendenze app (verificate su pub.dev il 2026-11-04)
+| Pacchetto | Versione | Licenza | Note |
+|---|---|---|---|
+| maplibre_gl | 0.27.1 (fissata) | BSD-3 | 0.28.0 uscita il giorno prima: scartata per prudenza |
+| geolocator | ^14.1.2 | MIT | |
+| shared_preferences | ^2.5.6 | BSD-3 | preferenze locali |
+| flutter_localizations | SDK | BSD-3 | testi Material in italiano |
+Previste: flutter_tts (MIT, M3), sqflite (BSD-2, M4), http (BSD-3) o dart:io.
 
 ## Dati
 OpenStreetMap — ODbL 1.0. Attribuzione obbligatoria visibile sulla mappa e nella

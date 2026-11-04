@@ -59,6 +59,32 @@ modello calcolato), nessun percorso per destinazione raggiungibile solo in autos
 
 Esempio reale (scenario motorway): motore 370 s, modello app 602 s — vedi KNOWN_ISSUES §8.
 
+## 2026-11-04 — Milestone 1 (app Flutter)
+
+| Verifica | Esito |
+|---|---|
+| `flutter analyze` (app) | nessun problema |
+| `flutter test` (app) — 14 test widget/unità | **14 / 14 superati** |
+| `flutter build web --release` (compilazione completa, incluso maplibre_gl) | riuscita |
+| `flutter build apk` | **non eseguito**: Android SDK assente (dl.google.com bloccato) |
+| Rendering reale della mappa / tile OpenFreeMap | **non verificato**: tiles.openfreemap.org bloccato, vista nativa non disponibile nei test |
+| GPS reale | **non verificato**: nessun dispositivo |
+
+Test coperti: schermata iniziale (mappa, ricerca, impostazioni, ricentraggio, profilo,
+attribuzione); primo fix GPS con centratura; ricentraggio con/senza posizione;
+GPS disattivato; permesso negato (temporaneo e permanente); perdita del segnale dopo
+10 s e ripristino; errore dello stream GPS e nuovo tentativo; tema scuro persistente;
+voce on/off persistente; solo profilo A selezionabile; profilo salvato non supportato →
+ciclomotore; attribuzioni ODbL e privacy.
+
+Nei test la mappa nativa è sostituita da un doppio di test (`test/test_doubles.dart`)
+che registra i comandi: verifica la logica della schermata, **non** il rendering.
+
+Bug reali trovati dai test e corretti:
+1. Tema: `fontSizeFactor` su un textTheme senza dimensioni → assert all'avvio (crash in debug).
+2. Timer del watchdog GPS non fermato alla chiusura della schermata.
+3. Nuovo tentativo GPS dopo un errore bloccato in attesa della cancellazione della sottoscrizione.
+
 ### Non eseguiti
 | Suite | Motivo |
 |---|---|
