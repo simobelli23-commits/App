@@ -106,6 +106,19 @@ void main() {
       expect(p.plan(snap(2, 0, NavStatus.arrived), man), isEmpty);
     });
 
+    test('partenza accorpata ("poi ..."): niente preavviso lontano doppio', () {
+      final m = [
+        const Maneuver(type: 1, instruction: 'Guida verso est.',
+            verbalPre: 'Guida verso est su Via A. poi Svolta a sinistra su Via B.',
+            lengthM: 320, timeS: 30, beginShapeIndex: 0, endShapeIndex: 1),
+        man[1],
+      ];
+      final p = VoicePlanner();
+      p.departure(m);
+      expect(p.plan(snap(1, 310), m, speedMps: 10), isEmpty);
+      expect(p.plan(snap(1, 90), m, speedMps: 10), hasLength(1));
+    });
+
     test('partenza', () {
       final p = VoicePlanner();
       expect(p.departure(man), 'Guida verso est su Via Emilia.');

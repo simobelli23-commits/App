@@ -27,6 +27,10 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // HTTP in chiaro consentito SOLO se richiesto (server Valhalla di sviluppo
+        // sulla rete di casa). Default: solo HTTPS.
+        manifestPlaceholders["usesCleartextTraffic"] =
+            (System.getenv("ALLOW_CLEARTEXT") == "true").toString()
     }
 
     buildTypes {

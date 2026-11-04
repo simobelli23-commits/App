@@ -14,6 +14,7 @@ class ScooterApp extends StatelessWidget {
   final MapViewFactory mapFactory;
   final core.RoutingProvider routing;
   final core.VoiceOutput? voice;
+  final Future<void> Function(bool on)? keepScreenOn;
 
   const ScooterApp({
     super.key,
@@ -22,6 +23,7 @@ class ScooterApp extends StatelessWidget {
     required this.mapFactory,
     required this.routing,
     this.voice,
+    this.keepScreenOn,
   });
 
   @override
@@ -43,6 +45,7 @@ class ScooterApp extends StatelessWidget {
           mapFactory: mapFactory,
           routing: routing,
           voice: voice,
+          keepScreenOn: keepScreenOn,
         ),
       ),
     );

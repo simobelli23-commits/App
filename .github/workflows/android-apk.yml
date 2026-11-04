@@ -5,6 +5,11 @@ name: Android APK
 
 on:
   workflow_dispatch:
+    inputs:
+      routing_url:
+        description: "URL del server Valhalla (es. http://192.168.1.10:8002/). Vuoto = non configurato"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -31,7 +36,12 @@ jobs:
         run: flutter pub get && flutter analyze && flutter test
       - name: Build APK (debug-signed, solo per test)
         working-directory: app
-        run: flutter build apk --release
+        env:
+          ROUTING_URL: ${{ inputs.routing_url }}
+        run: |
+          # HTTP in chiaro solo se l'URL del server lo richiede (server di sviluppo in LAN)
+          if [[ "$ROUTING_URL" == http://* ]]; then export ALLOW_CLEARTEXT=true; fi
+          flutter build apk --release --dart-define=ROUTING_URL="$ROUTING_URL"
       - uses: actions/upload-artifact@v4
         with:
           name: navigatore-scooter-apk

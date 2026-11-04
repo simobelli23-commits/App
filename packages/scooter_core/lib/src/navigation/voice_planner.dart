@@ -38,7 +38,13 @@ class VoicePlanner {
     if (_departureSaid || maneuvers.isEmpty) return null;
     _departureSaid = true;
     final m = maneuvers.first;
-    return (m.verbalPre ?? m.instruction).trim();
+    final text = (m.verbalPre ?? m.instruction).trim();
+    // Valhalla accorpa una manovra ravvicinata ("…, poi Svolta a sinistra…"):
+    // il preavviso "lontano" di quella manovra sarebbe un doppione.
+    if (maneuvers.length > 1 && text.contains(' poi ')) {
+      _done.putIfAbsent(1, () => <_Stage>{}).add(_Stage.far);
+    }
+    return text;
   }
 
   /// Annunci da pronunciare per lo stato corrente (di solito 0 o 1).

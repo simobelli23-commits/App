@@ -17,6 +17,7 @@ dependencies:
   geolocator: ^14.1.2
   shared_preferences: ^2.5.6
   flutter_tts: ^4.2.5
+  wakelock_plus: 1.8.0  # 1.8.1+ incompatibile con geolocator 14 (dbus)
 
 dev_dependencies:
   flutter_test:

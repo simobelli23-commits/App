@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
   final MapViewFactory mapFactory;
   final core.RoutingProvider routing;
   final core.VoiceOutput? voice;
+  final Future<void> Function(bool on)? keepScreenOn;
 
   const HomeScreen({
     super.key,
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
     required this.mapFactory,
     required this.routing,
     this.voice,
+    this.keepScreenOn,
   });
 
   @override
@@ -152,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
         settings: widget.settings,
         location: _loc,
         mapFactory: widget.mapFactory,
+        keepScreenOn: widget.keepScreenOn,
       ),
     ));
     if (mounted) {

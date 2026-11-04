@@ -18,8 +18,18 @@
    Su 3,6 km residenziali sintetici: modello app 602 s vs motore 370 s. Da calibrare sui
    dati reali (le velocità tipiche sono ipotesi, non misure).
 9. ETA residuo proporzionale alla distanza: impreciso su percorsi misti urbano/extraurbano.
-10. App M1: ricerca destinazione, routing, navigazione, TTS e SQLite non ancora collegati
-    (il campo di ricerca è visibilmente disabilitato con "Disponibile nella prossima versione").
+10. Ricerca per indirizzo non ancora disponibile (M4): destinazione solo con pressione
+    prolungata sulla mappa. Preferiti/cronologia/SQLite non implementati.
+10f. URL del server di routing fissato in fase di build (`--dart-define=ROUTING_URL`);
+    senza, ogni calcolo fallisce con "Server di routing non configurato".
+10g. HTTP in chiaro consentito solo con build `ALLOW_CLEARTEXT=true` (server di sviluppo
+    in LAN). Per la beta serve HTTPS.
+10h. Se il telefono non ha la voce italiana installata, l'app resta in silenzio (nessun
+    avviso visivo dedicato ancora).
+10i. Navigazione solo in primo piano: con app in background o schermo bloccato il GPS
+    si ferma (nessun servizio in background).
+10j. Il "fuori percorso" non usa map matching vero: proiezione sul percorso con soglia
+    40 m + accuratezza, 3 fix consecutivi. Ricalcolo al massimo ogni 15 s.
 10b. Rendering mappa e GPS mai provati su dispositivo; tile OpenFreeMap non verificate.
 10c. Tema scuro: la mappa usa lo stesso stile chiaro "liberty" (nessuno stile scuro configurato).
 10d. APK release firmato con chiave di debug (solo test, non pubblicabile).

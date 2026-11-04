@@ -16,6 +16,8 @@
 | geolocator | ^14.1.2 | MIT | |
 | shared_preferences | ^2.5.6 | BSD-3 | preferenze locali |
 | flutter_localizations | SDK | BSD-3 | testi Material in italiano |
+| flutter_tts | ^4.2.5 | MIT | usa il motore TTS del telefono |
+| wakelock_plus | 1.8.0 (fissata) | BSD-3 | 1.8.1+ in conflitto con geolocator 14 (dbus) |
 Previste: flutter_tts (MIT, M3), sqflite (BSD-2, M4), http (BSD-3) o dart:io.
 
 ## Dati

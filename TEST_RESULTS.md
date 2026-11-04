@@ -85,6 +85,39 @@ Bug reali trovati dai test e corretti:
 2. Timer del watchdog GPS non fermato alla chiusura della schermata.
 3. Nuovo tentativo GPS dopo un errore bloccato in attesa della cancellazione della sottoscrizione.
 
+## 2026-11-04 — Milestone 3 (navigazione turn-by-turn)
+
+| Suite | Esito | Fonte |
+|---|---|---|
+| Core unit (`dart test -x integration`) | **68 / 68** | automatica |
+| Core e2e con Valhalla reale (`dart test -t integration`) | **6 / 6** | automatica, rete sintetica |
+| App (`flutter test`) | **21 / 21** | automatica, doppi di test per mappa/GPS/routing |
+| `flutter analyze`, `dart analyze` | nessun problema | |
+| `flutter build web` (verifica compilazione) | riuscita | |
+
+Nuovi test core (`guidance_test.dart`): formattazione italiana; annunci vocali in tre
+fasi senza ripetizioni, soglie in funzione della velocità, arrivo, partenza accorpata;
+motore: avvio, guida, arrivo, nessun percorso, ricalcolo con origine e direzione
+attuali, ricalcolo senza rete (percorso mantenuto), perdita GPS, voce disattivata,
+errore TTS non bloccante. Mutation check: rimossa la deduplica degli annunci → 2
+test falliti; sostituito il percorso in caso di errore di ricalcolo → 1 test fallito.
+
+E2e con server reale: guida simulata (un fix ogni 10 m) lungo il percorso che evita
+l'autostrada → 2 svolte annunciate, arrivo; uscita sulla strada di deviazione →
+ricalcolo reale dalla nuova posizione. Trascrizione vocale reale (estratto):
+"Tra 100 metri, svolta a sinistra su Via motorway deviazione." → "Svolta a sinistra
+su Via motorway deviazione." → … → "Sei arrivato a destinazione."
+Difetto trovato e corretto: preavviso doppio quando Valhalla accorpa la partenza
+con la manovra successiva ("…, poi Svolta a sinistra…").
+
+App (`navigation_flow_test.dart`, 7 test): pressione prolungata → anteprima (distanza,
+stima, avvisi, alternative); senza GPS nessuna richiesta; nessun percorso consentito
+(niente "Avvia", "Riprova"); server irraggiungibile vs connessione assente; annulla;
+guida completa (manovra, distanza, voce, ricalcolo, arrivo, schermo acceso/spento);
+voce disattivata.
+
+**Non verificato**: voce italiana reale del TTS Android, GPS reale, guida su strada.
+
 ### Non eseguiti
 | Suite | Motivo |
 |---|---|

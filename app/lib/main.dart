@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'adapters/routing_factory.dart';
 import 'adapters/tts_voice.dart';
@@ -20,5 +21,6 @@ Future<void> main() async {
     mapFactory: const MapLibreMapViewFactory(),
     routing: createRoutingProvider(),
     voice: TtsVoice(),
+    keepScreenOn: (on) => WakelockPlus.toggle(enable: on),
   ));
 }

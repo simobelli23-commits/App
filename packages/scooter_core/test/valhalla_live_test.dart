@@ -24,6 +24,8 @@ void main() {
   });
   tearDownAll(() => transport.close());
 
+  group('navigazione', () => navigationLiveTests(url));
+
   // Coordinate dal manifest della rete sintetica (scenari a lat 44.50 + i*0.03).
   RouteRequest at(double lat) => RouteRequest(
       origin: LatLng(lat, 10.696),
@@ -66,4 +68,88 @@ void main() {
     expect((res as Err).error.kind,
         anyOf(RoutingErrorKind.serverUnreachable, RoutingErrorKind.noConnection));
   });
+}
+
+/// Navigazione completa contro il server reale: guida simulata lungo il
+/// percorso calcolato (posizioni sintetiche), uscita di strada e ricalcolo.
+void navigationLiveTests(String? url) {
+  final skip = url == null ? 'VALHALLA_URL non impostata: server reale assente' : null;
+
+  test('guida lungo il percorso reale: annunci delle svolte e arrivo', () async {
+    final t = IoHttpTransport();
+    final voice = _Voice();
+    final e = NavigationEngine(
+        routing: ValhallaRoutingProvider(baseUrl: Uri.parse(url!), http: t),
+        profile: VehicleProfiles.a50cc,
+        destination: const LatLng(44.50, 10.724),
+        voice: voice);
+    final res = await e.start(const LatLng(44.50, 10.696));
+    expect(res, isA<Ok<RouteResult, RoutingError>>(), reason: '$res');
+    final shape = Polyline(e.route!.shape);
+    final start = DateTime.utc(2026, 1, 1, 12);
+    // un fix ogni 10 m a ~10 m/s
+    for (var along = 0.0, s = 0; along <= shape.lengthM; along += 10, s++) {
+      e.onFix(LocationFix(position: _pointAt(shape, along), accuracyM: 5, speedMps: 10,
+          timestamp: start.add(Duration(seconds: s))));
+    }
+    e.onFix(LocationFix(position: e.route!.shape.last, accuracyM: 5, speedMps: 0,
+        timestamp: start.add(const Duration(hours: 1))));
+    expect(e.status, EngineStatus.arrived);
+    final turns = voice.said.where((s) => s.toLowerCase().contains('svolta')).toList();
+    // il percorso che evita l'autostrada ha 2 svolte a sinistra
+    expect(turns.where((s) => s.startsWith('Tra ')), isNotEmpty, reason: '${voice.said}');
+    expect(turns.where((s) => s.startsWith('Svolta')), hasLength(2), reason: '${voice.said}');
+    expect(voice.said.last, 'Sei arrivato a destinazione.');
+    expect(e.rerouteCount, 0);
+    await e.dispose();
+    t.close();
+  }, skip: skip);
+
+  test('uscita dal percorso: ricalcolo reale dalla nuova posizione', () async {
+    final t = IoHttpTransport();
+    const lat = 44.50 + 14 * 0.03; // residential_ok: scorciatoia diretta consentita
+    final e = NavigationEngine(
+        routing: ValhallaRoutingProvider(baseUrl: Uri.parse(url!), http: t),
+        profile: VehicleProfiles.a50cc,
+        destination: const LatLng(lat, 10.724),
+        voice: _Voice());
+    await e.start(const LatLng(lat, 10.696));
+    final before = e.route!;
+    final start = DateTime.utc(2026, 1, 1, 12);
+    // si imbocca la strada di deviazione verso nord (fuori dal percorso)
+    for (var i = 0; i < 4; i++) {
+      e.onFix(LocationFix(position: LatLng(lat + 0.0008 + i * 0.0004, 10.700), accuracyM: 5,
+          speedMps: 8, headingDeg: 0, timestamp: start.add(Duration(seconds: i))));
+    }
+    for (var i = 0; i < 50 && e.status == EngineStatus.rerouting; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+    expect(e.rerouteCount, 1);
+    expect(e.status, EngineStatus.navigating);
+    expect(identical(e.route, before), isFalse);
+    expect(e.route!.shape.first.lat, greaterThan(lat + 0.001));
+    expect(e.route!.lengthM, greaterThan(before.lengthM * 0.5));
+    await e.dispose();
+    t.close();
+  }, skip: skip);
+}
+
+LatLng _pointAt(Polyline line, double along) {
+  for (var i = 0; i < line.points.length - 1; i++) {
+    final a = line.cumulativeM[i], b = line.cumulativeM[i + 1];
+    if (along <= b) {
+      final f = b == a ? 0.0 : (along - a) / (b - a);
+      final p = line.points[i], q = line.points[i + 1];
+      return LatLng(p.lat + (q.lat - p.lat) * f, p.lon + (q.lon - p.lon) * f);
+    }
+  }
+  return line.points.last;
+}
+
+class _Voice implements VoiceOutput {
+  final said = <String>[];
+  @override
+  Future<void> speak(String text) async => said.add(text);
+  @override
+  Future<void> stop() async {}
 }

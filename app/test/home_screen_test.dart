@@ -19,19 +19,26 @@ void main() {
     now = DateTime.utc(2026, 11, 4, 12);
   });
 
-  Future<(RecordingMapFactory, ControlledLocationProvider, LocationController)> pumpApp(
-      WidgetTester tester, List<Result<void, LocationError>> ready) async {
+  Future<(RecordingMapFactory, ControlledLocationProvider, LocationController)>
+      pumpApp(
+          WidgetTester tester, List<Result<void, LocationError>> ready) async {
     final maps = RecordingMapFactory();
     final provider = ControlledLocationProvider(ready);
     final loc = LocationController(provider, clock: () => now);
     await tester.pumpWidget(ScooterApp(
-        settings: SettingsController(prefs), location: loc, mapFactory: maps, routing: ScriptedRouting([Ok([lRoute()])])));
+        settings: SettingsController(prefs),
+        location: loc,
+        mapFactory: maps,
+        routing: ScriptedRouting([
+          Ok([lRoute()])
+        ])));
     await tester.pump();
     addTearDown(loc.dispose);
     return (maps, provider, loc);
   }
 
-  testWidgets('schermata iniziale: mappa, ricerca, impostazioni, profilo, attribuzione',
+  testWidgets(
+      'schermata iniziale: mappa, ricerca, impostazioni, profilo, attribuzione',
       (tester) async {
     final (maps, _, _) = await pumpApp(tester, [ok]);
     expect(find.byKey(const Key('test-map')), findsOneWidget);
@@ -44,7 +51,8 @@ void main() {
     expect(find.byKey(const Key('location-banner-waitingFix')), findsOneWidget);
   });
 
-  testWidgets('primo fix: posizione mostrata e mappa centrata con zoom', (tester) async {
+  testWidgets('primo fix: posizione mostrata e mappa centrata con zoom',
+      (tester) async {
     final (maps, provider, _) = await pumpApp(tester, [ok]);
     provider.fixesCtrl.add(fixAt(44.65, 10.93));
     await tester.pump();
@@ -65,7 +73,8 @@ void main() {
     expect(maps.map.centers.last.$1, const LatLng(44.65, 10.93));
   });
 
-  testWidgets('ricentraggio senza posizione: avviso, nessun crash', (tester) async {
+  testWidgets('ricentraggio senza posizione: avviso, nessun crash',
+      (tester) async {
     final (maps, _, _) = await pumpApp(tester, [ok]);
     await tester.tap(find.byKey(const Key('recenter')));
     await tester.pump();
@@ -73,10 +82,12 @@ void main() {
     expect(maps.map.centers, isEmpty);
   });
 
-  testWidgets('GPS disattivato: messaggio e apertura impostazioni', (tester) async {
+  testWidgets('GPS disattivato: messaggio e apertura impostazioni',
+      (tester) async {
     final (_, provider, _) =
         await pumpApp(tester, [err(LocationErrorKind.serviceDisabled), ok]);
-    expect(find.byKey(const Key('location-banner-serviceDisabled')), findsOneWidget);
+    expect(find.byKey(const Key('location-banner-serviceDisabled')),
+        findsOneWidget);
     await tester.tap(find.text('Apri impostazioni'));
     await tester.pump();
     expect(provider.openLocationSettingsCalls, 1);
@@ -87,13 +98,15 @@ void main() {
   testWidgets('permesso negato: nuova richiesta', (tester) async {
     final (_, provider, _) =
         await pumpApp(tester, [err(LocationErrorKind.permissionDenied), ok]);
-    expect(find.byKey(const Key('location-banner-permissionDenied')), findsOneWidget);
+    expect(find.byKey(const Key('location-banner-permissionDenied')),
+        findsOneWidget);
     await tester.tap(find.text('Concedi permesso'));
     await tester.pump();
     expect(provider.ensureReadyCalls, 2);
   });
 
-  testWidgets('permesso negato in modo permanente: impostazioni app', (tester) async {
+  testWidgets('permesso negato in modo permanente: impostazioni app',
+      (tester) async {
     final (_, provider, _) =
         await pumpApp(tester, [err(LocationErrorKind.permissionDeniedForever)]);
     await tester.tap(find.text('Impostazioni app'));
@@ -118,12 +131,14 @@ void main() {
     expect(find.byKey(const Key('location-banner-signalLost')), findsNothing);
   });
 
-  testWidgets('errore dello stream GPS: stato non disponibile, riprova', (tester) async {
+  testWidgets('errore dello stream GPS: stato non disponibile, riprova',
+      (tester) async {
     final (_, provider, loc) = await pumpApp(tester, [ok]);
     provider.fixesCtrl.addError(StateError('gps'));
     await tester.pump();
     await tester.pump();
-    expect(find.byKey(const Key('location-banner-unavailable')), findsOneWidget);
+    expect(
+        find.byKey(const Key('location-banner-unavailable')), findsOneWidget);
     await tester.tap(find.text('Riprova'));
     await tester.pump();
     await tester.pump();

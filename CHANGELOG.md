@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.0] — 2026-11-04 — Milestone 3
+### Aggiunto
+- Core: `VoicePlanner`, `NavigationEngine`, `FormatIt`; test e2e di navigazione con Valhalla reale.
+- App: destinazione con pressione prolungata, anteprima percorso con alternative,
+  schermata di guida con voce italiana (TTS di sistema), schermo acceso durante la guida.
+- Build: URL server di routing e HTTP opzionale per server di sviluppo (workflow `routing_url`).
+### Corretto
+- Workflow APK: Java 21 richiesto da maplibre_gl (run #1 fallita).
+- Preavviso vocale doppio con partenza accorpata.
+
 ## [0.1.0] — 2026-11-04 — Milestone 1
 ### Aggiunto
 - App Flutter `app/` (Android + web per verifica di compilazione): mappa MapLibre

@@ -22,6 +22,9 @@ class NavigationScreen extends StatefulWidget {
   final MapViewFactory mapFactory;
   final DateTime Function() clock;
 
+  /// Mantiene lo schermo acceso durante la guida (wakelock nell'app).
+  final Future<void> Function(bool on)? keepScreenOn;
+
   const NavigationScreen({
     super.key,
     required this.route,
@@ -32,6 +35,7 @@ class NavigationScreen extends StatefulWidget {
     required this.location,
     required this.mapFactory,
     this.clock = DateTime.now,
+    this.keepScreenOn,
   });
 
   @override
@@ -62,6 +66,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       setState(() {});
     });
     _engine.startWithRoute(widget.route);
+    widget.keepScreenOn?.call(true).catchError((Object _) {});
     widget.location.addListener(_onLocation);
     _ticker = Timer.periodic(
         const Duration(seconds: 1), (_) => _engine.onTick(widget.clock()));
@@ -71,6 +76,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   void dispose() {
     widget.location.removeListener(_onLocation);
+    widget.keepScreenOn?.call(false).catchError((Object _) {});
     _ticker?.cancel();
     _sub?.cancel();
     _engine.dispose();

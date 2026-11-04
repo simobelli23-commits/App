@@ -27,7 +27,8 @@ class RecordingMap implements MapViewHandle {
   Future<void> fitPoints(List<LatLng> points) async => fits++;
 
   @override
-  Future<void> centerOn(LatLng target, {double? zoom}) async => centers.add((target, zoom));
+  Future<void> centerOn(LatLng target, {double? zoom}) async =>
+      centers.add((target, zoom));
 
   @override
   Future<void> showUserPosition(LatLng position, double accuracyM) async =>
@@ -82,10 +83,13 @@ class ControlledLocationProvider implements AppLocationProvider {
 }
 
 const ok = Ok<void, LocationError>(null);
-Err<void, LocationError> err(LocationErrorKind k) => Err(LocationError(k, k.name));
+Err<void, LocationError> err(LocationErrorKind k) =>
+    Err(LocationError(k, k.name));
 
 LocationFix fixAt(double lat, double lon) => LocationFix(
-    position: LatLng(lat, lon), accuracyM: 5, timestamp: DateTime.utc(2026, 11, 4, 12));
+    position: LatLng(lat, lon),
+    accuracyM: 5,
+    timestamp: DateTime.utc(2026, 11, 4, 12));
 
 /// Routing controllato dal test (le risposte reali del motore sono coperte
 /// dai test di integrazione in scooter_core).
@@ -114,18 +118,38 @@ class RecordingVoice implements VoiceOutput {
 }
 
 /// Percorso a L: 791 m verso est, poi 1112 m verso nord.
-RouteResult lRoute({double km = 1.903, List<String> warnings = const []}) => RouteResult(
-      shape: const [LatLng(44.6450, 10.9200), LatLng(44.6450, 10.9300), LatLng(44.6550, 10.9300)],
+RouteResult lRoute({double km = 1.903, List<String> warnings = const []}) =>
+    RouteResult(
+      shape: const [
+        LatLng(44.6450, 10.9200),
+        LatLng(44.6450, 10.9300),
+        LatLng(44.6550, 10.9300)
+      ],
       maneuvers: const [
-        Maneuver(type: 1, instruction: 'Guida verso est su Via Emilia.',
-            verbalPre: 'Guida verso est su Via Emilia.', lengthM: 791, timeS: 70,
-            beginShapeIndex: 0, endShapeIndex: 1),
-        Maneuver(type: 15, instruction: 'Svolta a sinistra su Via Giardini.',
+        Maneuver(
+            type: 1,
+            instruction: 'Guida verso est su Via Emilia.',
+            verbalPre: 'Guida verso est su Via Emilia.',
+            lengthM: 791,
+            timeS: 70,
+            beginShapeIndex: 0,
+            endShapeIndex: 1),
+        Maneuver(
+            type: 15,
+            instruction: 'Svolta a sinistra su Via Giardini.',
             verbalAlert: 'Svolta a sinistra su Via Giardini.',
-            verbalPre: 'Svolta a sinistra su Via Giardini.', lengthM: 1112, timeS: 100,
-            beginShapeIndex: 1, endShapeIndex: 2),
-        Maneuver(type: 4, instruction: 'Sei arrivato a destinazione.', lengthM: 0, timeS: 0,
-            beginShapeIndex: 2, endShapeIndex: 2),
+            verbalPre: 'Svolta a sinistra su Via Giardini.',
+            lengthM: 1112,
+            timeS: 100,
+            beginShapeIndex: 1,
+            endShapeIndex: 2),
+        Maneuver(
+            type: 4,
+            instruction: 'Sei arrivato a destinazione.',
+            lengthM: 0,
+            timeS: 0,
+            beginShapeIndex: 2,
+            endShapeIndex: 2),
       ],
       lengthM: km * 1000,
       engineTimeS: 170,
